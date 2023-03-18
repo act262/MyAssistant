@@ -49,6 +49,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.5"
+  dart_openai:
+    dependency: "direct main"
+    description:
+      name: dart_openai
+      sha256: c7ffca3d54c149c50c4ad3fb22e3e328226ecfe6e745865157d4075e75a04545
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.8.0"
   fake_async:
     dependency: transitive
     description:
