@@ -1,16 +1,27 @@
 # my_assistant
 
-A new Flutter project.
+## 注册openai
 
-## Getting Started
+略...
 
-This project is a starting point for a Flutter application.
+### 获取openai api token
 
-A few resources to get you started if this is your first Flutter project:
+## 创建 flutter 工程
+```sh
+flutter create -t app MyAssistant --project-name my_assistant --platforms android,ios,windows,linux,macos,web
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### 使用http api 跑一把效果
+```sh
+# RESTful API 
+curl https://api.openai.com/v1/chat/completions \       
+  -H "Content-Type: application/json" \     
+  -H "Authorization: Bearer $OPENAI_API_KEY" \
+  -d '{
+    "model": "gpt-3.5-turbo",
+    "messages": [{"role": "user", "content": "使用flutter编写openai 接口调用"}]
+  }'
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 根据生成代码修改
+生成一个聊天模式的chat gpt, 跑起来看效果还不错
