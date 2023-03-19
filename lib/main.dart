@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'openai_api.dart';
+import 'package:flutter_highlight/flutter_highlight.dart';
+import 'package:flutter_highlight/themes/github.dart';
 import 'package:dart_openai/openai.dart';
 
 void main() => runApp(const MyApp());
@@ -49,7 +50,7 @@ class _ChatScreenState extends State<ChatScreen> {
               itemCount: messages.length,
               itemBuilder: (_, index) => Container(
                 color: index % 2 == 0 ? Colors.white : Colors.grey[200],
-                child: ListTile(title: SelectableText(messages[index])),
+                child: ListTile(title: _buildMessage(messages[index])),
               ),
             ),
           ),
@@ -65,7 +66,6 @@ class _ChatScreenState extends State<ChatScreen> {
                     onSubmitted: (_) => _sendMessage(),
                   ),
                 ),
-                // 带loading的发送按钮
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 4),
                   child: _isLoading
@@ -75,11 +75,6 @@ class _ChatScreenState extends State<ChatScreen> {
                           onPressed: _sendMessage,
                         ),
                 ),
-
-                // IconButton(
-                //   icon: Icon(Icons.send),
-                //   onPressed: sendMessage,
-                // ),
               ],
             ),
           )
@@ -144,5 +139,49 @@ class _ChatScreenState extends State<ChatScreen> {
         );
       }
     }
+  }
+
+  // 显示文本内容的代码块内容
+  Widget _buildMessage(String message) {
+    var regex = RegExp(r'^```(\w*)\n([\s\S]*?)\n```$');
+    // var matches = regex.allMatches(message);
+    // matches.forEach((match) {
+    //   var language = match.group(1);
+    //   var code = match.group(2);
+    //   // return _buildCodeBlock(language, code);
+    // });
+
+    var match = regex.firstMatch(message);
+    if (match == null) {
+      return Text(message);
+    }
+    String language = match[1]!;
+    String code = match[2]!;
+
+    return _buildCodeBlock(language, code);
+  }
+
+  Widget _buildCodeBlock(String? language, String code) {
+    return HighlightView(
+      // The original code to be highlighted
+      code,
+
+      // Specify language
+      // It is recommended to give it a value for performance
+      language: language,
+
+      // Specify highlight theme
+      // All available themes are listed in `themes` folder
+      theme: githubTheme,
+
+      // Specify padding
+      padding: EdgeInsets.all(12),
+
+      // Specify text style
+      textStyle: TextStyle(
+        fontFamily: 'My awesome monospace font',
+        fontSize: 16,
+      ),
+    );
   }
 }
