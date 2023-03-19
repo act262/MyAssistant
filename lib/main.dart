@@ -3,6 +3,8 @@ import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/github.dart';
 import 'package:dart_openai/openai.dart';
 
+import 'env/env.dart';
+
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
@@ -10,7 +12,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    OpenAI.apiKey = "xxoo";
+    OpenAI.apiKey = Env.apiKey;
 
     return const MaterialApp(
       title: 'OpenAI Flutter Demo',

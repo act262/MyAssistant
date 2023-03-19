@@ -25,3 +25,14 @@ curl https://api.openai.com/v1/chat/completions \       
 
 ### 根据生成代码修改
 生成一个聊天模式的chat gpt, 跑起来看效果还不错
+
+
+## 从环境变量读取`OPENAI_APK_KEY`
+
+### 设置环境变量
+`.env` 文件中修改`OPENAI_APK_KEY` 值
+
+生成对应的dart代码
+```sh
+flutter pub run build_runner build
+```
