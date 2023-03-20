@@ -139,6 +139,17 @@ class _ChatScreenState extends State<ChatScreen> {
             backgroundColor: Colors.red,
           ),
         );
+      } catch (e) {
+        print(e);
+        // 提示错误信息
+        setState(() => _isLoading = false);
+        // show snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.toString()),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     }
   }
