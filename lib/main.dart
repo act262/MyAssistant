@@ -29,7 +29,10 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  final ScrollController _scrollController = ScrollController();
+
   final textController = TextEditingController();
+
   final messages = <String>[];
 
   bool _isLoading = false;
@@ -50,6 +53,7 @@ class _ChatScreenState extends State<ChatScreen> {
           Flexible(
             child: ListView.builder(
               itemCount: messages.length,
+              controller: _scrollController,
               itemBuilder: (_, index) => Container(
                 color: index % 2 == 0 ? Colors.white : Colors.grey[200],
                 child: ListTile(title: _buildMessage(messages[index])),
@@ -102,6 +106,22 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
+  void _scrollToBottom() {
+    double maxScrollExtent = _scrollController.position.maxScrollExtent;
+    _scrollController.animateTo(
+      maxScrollExtent,
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
+  }
+
+  void _updateData(message, content) {
+    setState(() => messages.addAll([message, content]));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollToBottom(); // 在下一帧中滚动到列表的底部
+    });
+  }
+
   Future<void> _sendMessage() async {
     final message = textController.text;
     if (message.isNotEmpty) {
@@ -123,8 +143,7 @@ class _ChatScreenState extends State<ChatScreen> {
         print(chatCompletion.choices.first.message.content);
 
         // add response to messages list
-        setState(() => messages
-            .addAll([message, chatCompletion.choices.first.message.content]));
+        _updateData(message, chatCompletion.choices.first.message.content);
         setState(() => _isLoading = false);
         // clear text field
         textController.text = '';
@@ -166,7 +185,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
     var match = regex.firstMatch(message);
     if (match == null) {
-      return Text(message);
+      return SelectableText(message);
     }
     String language = match[1]!;
     String code = match[2]!;
